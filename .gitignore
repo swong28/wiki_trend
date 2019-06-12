@@ -1,4 +1,5 @@
-.gitignore
+/data
+/.vscode
 credentials.sh
 results.txt
-.vscode*
+

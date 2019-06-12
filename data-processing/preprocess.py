@@ -16,32 +16,40 @@ Returns:
 
 """
 
-# from pyspark import SparkContext, SparkConf
-# from pyspark.sql import SparkSession
-
-# import sys 
-
-# path = "s3://insight-wiki-clickstream/2016_04_en_clickstream.tsv"
-
-# sc = SparkContext.getOrCreate()
-# spark = SparkSession(sc)
-
-# df = spark.read.load(path)
-
-# print(df)
-
 from pyspark import SparkContext
+from pyspark.sql import SparkSession
 
-# from pyspark.sql import HiveContext, SQLContext, Row
-# from pyspark.sql.types import *
-# from datetime import datetime
-# from pyspark.sql.functions import col, date_sub, log, mean, to_date, udf, unix_timestamp
-# from pyspark.sql.window import Window
-# from pyspark.sql import DataFrame
-
-sc =SparkContext().getOrCreate()
-# sc.setLogLevel("DEBUG")
-# sqlContext = SQLContext(sc)
+# sc =SparkContext().getOrCreate()
 path = "s3a://insight-wiki-clickstream/2016_04_en_clickstream.tsv"
-raw = sc.textFile(path)
-print(raw.first())
+path2 = "./data/2016_04_en_clickstream.tsv"
+# raw = sc.textFile(path)
+# print(raw.first())
+
+
+def loadFiles(bucket_name):
+    """
+    Load files in a aws bucket with name, bucket_name.
+    """
+    return sc.textFile(bucket_name)
+
+def cleanData(spark_file):
+    """
+    Clean Wikipedia Clickstream Data
+    """
+
+    # Skip the Header
+    raw.first()
+
+    # Seperate the values by tabs
+    parts = raw.map(lambda x: x.split('\t'))
+    
+    # Define Schema
+    
+
+    # Add Structure Fields
+
+
+if __name__ == '__main__':
+    sc = SparkContext().getOrCreate()
+    raw = loadFiles(path)
+
