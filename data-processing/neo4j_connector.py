@@ -1,3 +1,10 @@
+"""
+Jason Wong
+6/12/2019
+
+Create a connector that can process Spark data to Neo4j database
+"""
+
 from py2neo import Graph
 import os 
 
