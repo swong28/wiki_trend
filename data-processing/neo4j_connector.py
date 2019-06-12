@@ -1,11 +1,13 @@
 """
 Jason Wong
 6/12/2019
+Wiki Trend
 
 Create a connector that can process Spark data to Neo4j database
 """
 
-from py2neo import Graph
+from neo4j import GraphDatabase
+# from py2neo.database import Schema
 import os 
 
 class neo4jConnector():
@@ -17,13 +19,18 @@ class neo4jConnector():
         """
         Initialize neo4j connector with my neo4j username and password.
         """
-        self.connector = Graph(
-            os.environ['NEO4J_DB'],
-            secure=True,
-            user=os.environ['NEO4J_USER'],
-            password=os.environ['NEO4J_PASSWORD']
+        self._driver = GraphDatabase.driver(
+            os.environ['NEO4J_URI'],
+            auth=(os.environ['NEO4J_USER'], 
+                password=os.environ['NEO4J_PASSWORD'])
         )
 
+    def close(self):
+        """
+        Close the neo4j database
+        """
+        self._diver.close()
+    
     def createNode(self, partition):
         """
         Create nodes on the neo4j for each line in partition.
@@ -32,3 +39,11 @@ class neo4jConnector():
             tx = self.connector.begin()
             tx.merge(node)
             tx.commit()
+
+    def defineIndices(self):
+        """
+        define and create indices for nodes in neo4j database
+        """
+        db_schema = Schema(self.connector)
+
+        # To Be Continued

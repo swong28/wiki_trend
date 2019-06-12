@@ -17,7 +17,7 @@ Returns:
 """
 
 from pyspark import SparkContext
-from pyspark.sql import SparkSession
+from pyspark.sql import SparkSession, Row
 
 # sc =SparkContext().getOrCreate()
 path = "s3a://insight-wiki-clickstream/2016_04_en_clickstream.tsv"
@@ -32,24 +32,38 @@ def loadFiles(bucket_name):
     """
     return sc.textFile(bucket_name)
 
-def cleanData(spark_file):
+def cleanData(raw):
     """
     Clean Wikipedia Clickstream Data
     """
 
     # Skip the Header
-    raw.first()
-
+    header = raw.first()
+    raw = raw.filter(lambda x: x != header)
+    
     # Seperate the values by tabs
     parts = raw.map(lambda x: x.split('\t'))
     
     # Define Schema
-    
+    links = parts.map(lambda p: Row(FROM=p[0],
+                                    TO=p[1],
+                                    TYPE=p[2],
+                                    OCCURENCE=int(p[3]))) 
 
-    # Add Structure Fields
+    # Convert to dataframe
+    wikiDF = spark.createDataFrame(links)
 
+    return wikiDF
 
 if __name__ == '__main__':
-    sc = SparkContext().getOrCreate()
-    raw = loadFiles(path)
+    # Begin Spark Session
+    spark = SparkSession.builder.appName("wiki-trend").getOrCreate()
 
+    # Begin Spark Context
+    sc = SparkContext.getOrCreate()
+
+    # Pre-process Data
+    raw = loadFiles(path2)
+    wikiDF = cleanData(raw)
+
+    print(wikiDF.head(5))

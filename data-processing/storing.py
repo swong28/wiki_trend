@@ -29,8 +29,6 @@ def createSchema():
     ### To Be Continued ###
 
 
-graph = Graph("bolt://localhost:7687",
-    auth=("neo4j", "neo4j"))
 
 if __name__ == "__main__":
     sc = SparkContext(appName='wiki-trend').getOrCreate()
