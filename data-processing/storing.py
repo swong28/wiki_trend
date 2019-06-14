@@ -16,6 +16,7 @@ def processData():
 
     # Pre-process Data
     # path2 = "./data/2016_shorted.tsv"
+    path = "s3a://insight-wiki-clickstream/2016_04_en_clickstream.tsv"
     path2 = "./data/2016_04_en_clickstream.tsv"
     raw = loadFiles(path2, sc)
     wikiDF = cleanData(raw, spark)
@@ -24,8 +25,9 @@ def processData():
     sql_context.registerDataFrameAsTable(wikiDF, "wiki_clicks")
 
     # createLinkNodes(sql_context, sc)
-    temp = wikiDF.rdd.map(createRelationships)
-    print(wikiDF.show())
+    # temp = wikiDF.rdd.map(createRelationships)
+    # print(wikiDF.show())
+    sc.parallelize(wikiDF.rdd.collect()).foreachPartition(createRelationships)
 
 def createLinkNodes(sql_context, sc):
     distinct_links = sql_context.sql("""
@@ -41,7 +43,7 @@ def createLinkNodes(sql_context, sc):
     link_nodes = distinct_links.rdd.map(
         lambda x: (Node("Link", name=x['NewColumn'])))
     
-    sc.parallelize(link_nodes.collect()).foreachPartition(createNodes)
+    sc.parallelize(link_nodes.collect()).foreachPartition(createRelationships)
 
 def createNodes(partition):
     gc = Graph(password='wong1234')
@@ -52,17 +54,18 @@ def createNodes(partition):
     
     tx.commit()
 
-def createRelationships(row):
-    gc = Graph(password='wong1234')
+def createRelationships(rows):
+    gc = Graph(bolts='bolt://ec2-35-174-61-237.compute-1.amazonaws.com:7687',
+               password='wong1234')
 
     tx = gc.begin()
-    n1 = Node("Link", name=row['FROM'])
-    n2 = Node("Link", name=row['TO'])
-    rel = Relationship(n1, "SENT TO", n2)
-    tx.merge(n1, "Link", "name")
-    tx.merge(n2, "Link", "name")
-    tx.merge(rel)
-
+    for row in rows:
+        n1 = Node("Link", name=row['FROM'])
+        n2 = Node("Link", name=row['TO'])
+        rel = Relationship(n1, "SENT TO", n2)
+        tx.merge(n1, "Link", "name")
+        tx.merge(n2, "Link", "name")
+        tx.merge(rel)
     tx.commit()
 
 if __name__ == "__main__":
