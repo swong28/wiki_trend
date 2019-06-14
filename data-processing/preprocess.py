@@ -17,22 +17,18 @@ Returns:
 """
 
 from pyspark import SparkContext
-from pyspark.sql import SparkSession, Row
+from pyspark.sql import SparkSession, Row, SQLContext
 
-# sc =SparkContext().getOrCreate()
 path = "s3a://insight-wiki-clickstream/2016_04_en_clickstream.tsv"
 path2 = "./data/2016_04_en_clickstream.tsv"
-# raw = sc.textFile(path)
-# print(raw.first())
 
-
-def loadFiles(bucket_name):
+def loadFiles(bucket_name, sc):
     """
     Load files in a aws bucket with name, bucket_name.
     """
     return sc.textFile(bucket_name)
 
-def cleanData(raw):
+def cleanData(raw, spark):
     """
     Clean Wikipedia Clickstream Data
     """
@@ -61,6 +57,8 @@ if __name__ == '__main__':
 
     # Begin Spark Context
     sc = SparkContext.getOrCreate()
+
+    sql_context = SQLContext(sc)
 
     # Pre-process Data
     raw = loadFiles(path2)

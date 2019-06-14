@@ -6,8 +6,7 @@ Wiki Trend
 Create a connector that can process Spark data to Neo4j database
 """
 
-from neo4j import GraphDatabase
-# from py2neo.database import Schema
+from py2neo import Graph
 import os 
 
 class neo4jConnector():
@@ -19,11 +18,7 @@ class neo4jConnector():
         """
         Initialize neo4j connector with my neo4j username and password.
         """
-        self._driver = GraphDatabase.driver(
-            os.environ['NEO4J_URI'],
-            auth=(os.environ['NEO4J_USER'], 
-                password=os.environ['NEO4J_PASSWORD'])
-        )
+        self.graph = Graph(password='wong1234')
 
     def close(self):
         """
@@ -31,19 +26,19 @@ class neo4jConnector():
         """
         self._diver.close()
     
-    def createNode(self, partition):
+    @classmethod
+    def createNode(cls, tx, link):
         """
         Create nodes on the neo4j for each line in partition.
         """
-        for node in partition:
-            tx = self.connector.begin()
-            tx.merge(node)
-            tx.commit()
+        tx.run("MERGE (a:Link {name: $link})", link=link)
 
-    def defineIndices(self):
+    @classmethod
+    def defineRelationship(cls, tx, link_a, link_b, occurence):
         """
-        define and create indices for nodes in neo4j database
+        Define Relationship beteen links
         """
-        db_schema = Schema(self.connector)
-
-        # To Be Continued
+        tx.run("MATCH (a:Link {name: $link_a}"
+               "MATCH (b:Link {name: $link_b}"
+               "MERGE (a)-[:OCCURRED]->(b)",
+                link_a=link_a, link_b=link_b)
