@@ -61,7 +61,7 @@ if __name__ == '__main__':
     sql_context = SQLContext(sc)
 
     # Pre-process Data
-    raw = loadFiles(path2)
-    wikiDF = cleanData(raw)
+    raw = loadFiles(path, sc)
+    wikiDF = cleanData(raw, spark)
 
     print(wikiDF.head(5))
