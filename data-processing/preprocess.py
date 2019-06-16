@@ -40,6 +40,10 @@ def cleanData(raw, spark):
     # Seperate the values by tabs
     parts = raw.map(lambda x: x.split('\t'))
     
+    # filter empty rows
+    parts = parts.filter(lambda x: (x[0]!='' and x[1]!='' 
+                                    and x[2]!='' and x[3]!='')
+    
     # Define Schema
     links = parts.map(lambda p: Row(FROM=p[0],
                                     TO=p[1],

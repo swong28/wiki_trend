@@ -17,7 +17,7 @@ def processData():
     # Pre-process Data
     # path2 = "./data/2016_shorted.tsv"
     path = "s3a://insight-wiki-clickstream/2016_04_en_clickstream.tsv"
-    path2 = "./data/2016_04_en_clickstream.tsv"
+    # path2 = "./data/2016_04_en_clickstream.tsv"
     raw = loadFiles(path2, sc)
     wikiDF = cleanData(raw, spark)
 
@@ -55,7 +55,7 @@ def createNodes(partition):
     tx.commit()
 
 def createRelationships(rows):
-    gc = Graph(bolts='bolt://ec2-35-174-61-237.compute-1.amazonaws.com:7687',
+    gc = Graph('bolt://34.204.189.250:7687',
                password='wong1234')
 
     tx = gc.begin()
