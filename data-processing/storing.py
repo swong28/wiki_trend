@@ -28,8 +28,10 @@ def processData():
     # temp = wikiDF.rdd.map(createRelationships)
     # print(wikiDF.show())
     
+    for row in wikiDF.rdd.collect():
+        createRelationships(row)
     
-    sc.parallelize(wikiDF.rdd.collect()).foreachPartition(createRelationships)
+    # sc.parallelize(wikiDF.rdd.collect()).foreachPartition(createRelationships)
 
 def createLinkNodes(sql_context, sc):
     distinct_links = sql_context.sql("""
@@ -56,18 +58,18 @@ def createNodes(partition):
     
     tx.commit()
 
-def createRelationships(rows):
+def createRelationships(row):
     gc = Graph('bolt://34.204.189.250:7687',
                password='wong1234')
 
     tx = gc.begin()
-    for row in rows:
-        n1 = Node("Link", name=row['FROM'])
-        n2 = Node("Link", name=row['TO'])
-        rel = Relationship(n1, "SENT TO", n2)
-        tx.merge(n1, "Link", "name")
-        tx.merge(n2, "Link", "name")
-        tx.merge(rel)
+    # for row in rows:
+    n1 = Node("Link", name=row['FROM'])
+    n2 = Node("Link", name=row['TO'])
+    rel = Relationship(n1, "SENT TO", n2)
+    tx.merge(n1, "Link", "name")
+    tx.merge(n2, "Link", "name")
+    tx.merge(rel)
     tx.commit()
 
 if __name__ == "__main__":
