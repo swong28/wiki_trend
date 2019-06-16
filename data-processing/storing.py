@@ -18,7 +18,7 @@ def processData():
     # path2 = "./data/2016_shorted.tsv"
     path = "s3a://insight-wiki-clickstream/2016_04_en_clickstream.tsv"
     # path2 = "./data/2016_04_en_clickstream.tsv"
-    raw = loadFiles(path2, sc)
+    raw = loadFiles(path, sc)
     wikiDF = cleanData(raw, spark)
 
     # Create Link Nodes
@@ -27,6 +27,8 @@ def processData():
     # createLinkNodes(sql_context, sc)
     # temp = wikiDF.rdd.map(createRelationships)
     # print(wikiDF.show())
+    
+    
     sc.parallelize(wikiDF.rdd.collect()).foreachPartition(createRelationships)
 
 def createLinkNodes(sql_context, sc):
