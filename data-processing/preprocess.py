@@ -42,7 +42,7 @@ def cleanData(raw, spark):
     
     # filter empty rows
     parts = parts.filter(lambda x: (x[0]!='' and x[1]!='' 
-                                    and x[2]!='' and x[3]!='')
+                                    and x[2]!='' and x[3]!=''))
     
     # Define Schema
     links = parts.map(lambda p: Row(FROM=p[0],
