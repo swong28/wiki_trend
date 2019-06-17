@@ -28,8 +28,9 @@ def processData():
     # temp = wikiDF.rdd.map(createRelationships)
     # print(wikiDF.show())
     
-    for row in wikiDF.rdd.collect():
-        createRelationships(row)
+    wikiDF.rdd.map(createRelationships)
+    # for row in wikiDF.rdd.collect():
+    #     createRelationships(row)
     
     # sc.parallelize(wikiDF.rdd.collect()).foreachPartition(createRelationships)
 
