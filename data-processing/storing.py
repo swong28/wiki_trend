@@ -16,8 +16,8 @@ def processData():
 
     # Pre-process Data
     # path2 = "./data/2016_shorted.tsv"
-    path = "s3a://insight-wiki-clickstream/2016_04_en_clickstream.tsv"
-    # path2 = "./data/2016_04_en_clickstream.tsv"
+    # path = "s3a://insight-wiki-clickstream/2016_04_en_clickstream.tsv"
+    path = "./data/2016_04_en_clickstream.tsv"
     raw = loadFiles(path, sc)
     wikiDF = cleanData(raw, spark)
 
@@ -28,7 +28,7 @@ def processData():
     # temp = wikiDF.rdd.map(createRelationships)
     # print(wikiDF.show())
     
-    wikiDF.rdd.map(createRelationships)
+    wikiDF.rdd.map(createRelationships).collect()
     # for row in wikiDF.rdd.collect():
     #     createRelationships(row)
     
@@ -60,7 +60,7 @@ def createNodes(partition):
     tx.commit()
 
 def createRelationships(row):
-    gc = Graph('bolt://34.204.189.250:7687',
+    gc = Graph('bolt://34.236.37.208:7687',
                password='wong1234')
 
     tx = gc.begin()
