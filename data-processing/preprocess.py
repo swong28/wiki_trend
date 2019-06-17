@@ -54,7 +54,7 @@ def cleanData(raw, spark):
     # Convert to dataframe
     wikiDF = spark.createDataFrame(links)
 
-    return parts
+    return wikiDF
 
 if __name__ == '__main__':
     # Begin Spark Session
