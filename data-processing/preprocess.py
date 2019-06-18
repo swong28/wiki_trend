@@ -45,7 +45,7 @@ def cleanData(raw, spark):
     parts = parts.filter(lambda x: len(x) == 4)
     parts = parts.filter(lambda x: (x[0]!='' and x[1]!='' 
                                     and x[2]!='' and x[3]!=''))
-    parts = parts.filter(lambda x: x[2] in ['other_internal'])
+    parts = parts.filter(lambda x: x[2] not in ['other_internal'])
     
     # Define Schema
     links = parts.map(lambda p: Row(FROM=p[0],
