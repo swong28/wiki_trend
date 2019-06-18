@@ -5,7 +5,7 @@ def pageRank(graph, wiki_page):
     tx.run(
     """
     CALL algo.pageRank.stream(
-        'MATCH (:Link {name:"Chicago"})-[*1..3]-(p:Link)
+        'MATCH (:Link {name:"Chicago"})-[*1..2]-(p:Link)
             RETURN DISTINCT id(p) AS id',
         'MATCH (p1:Link)-[r]->(p2:Link) 
             RETURN id(p1) AS source, id(p2) AS target, r.occurence AS weight',
@@ -28,7 +28,8 @@ def centrality(graph, wiki_page):
     return 
 
 if __name__ == "__main__":
-    gc = Graph('bolt://3.217.252.116',
+    gc = Graph(host='bolt://3.217.252.116',
+               port='7687',
                password='wong1234')
     temp = pageRank(gc, 'Barack_Obama')
     print(temp.run())

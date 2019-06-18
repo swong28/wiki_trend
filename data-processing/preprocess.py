@@ -21,7 +21,7 @@ from pyspark.sql import SparkSession, Row, SQLContext
 
 path = "s3a://insight-wiki-clickstream/2016_04_en_clickstream.tsv"
 # path = "./data/2016_shorted.tsv"
-# path2 = "./data/2016_04_en_clickstream.tsv"
+# path = "./data/2016_04_en_clickstream.tsv"
 
 def loadFiles(bucket_name, sc):
     """
