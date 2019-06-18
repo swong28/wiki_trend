@@ -28,8 +28,7 @@ def centrality(graph, wiki_page):
     return 
 
 if __name__ == "__main__":
-    gc = Graph(host='bolt://3.217.252.116',
-               port='7687',
+    gc = Graph('bolt://3.217.252.116',
                password='wong1234')
     temp = pageRank(gc, 'Barack_Obama')
     print(temp.run())

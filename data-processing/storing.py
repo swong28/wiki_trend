@@ -57,7 +57,7 @@ def createNodes(partition):
     tx.commit()
 
 def createRelationships(row):
-    gc = Graph('bolt://3.217.252.116',
+    gc = Graph('http://3.217.252.116/7474/',
                password='wong1234')
 
     tx = gc.begin()
@@ -86,5 +86,3 @@ def createRelationships(row):
 
 if __name__ == "__main__":
     processData()
-
-
