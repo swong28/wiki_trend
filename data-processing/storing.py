@@ -57,7 +57,7 @@ def createNodes(partition):
     tx.commit()
 
 def createRelationships(rows):
-    gc = Graph(#'bolt://3.217.252.116',
+    gc = Graph('bolt://3.217.252.116',
                password='wong1234')
 
     if (rows == None):
