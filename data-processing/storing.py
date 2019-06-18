@@ -29,7 +29,7 @@ def processData():
     # temp = wikiDF.rdd.map(createRelationships)
     # print(wikiDF.show())
     
-    wikiDF.rdd.map(createRelationships).collect()
+    wikiDF.rdd.foreachPartition(createRelationships)
 
 def createLinkNodes(sql_context, sc):
     distinct_links = sql_context.sql("""
@@ -56,33 +56,37 @@ def createNodes(partition):
     
     tx.commit()
 
-def createRelationships(row):
-    gc = Graph('bolt://3.217.252.116',
+def createRelationships(rows):
+    gc = Graph(#'bolt://3.217.252.116',
                password='wong1234')
 
-    tx = gc.begin()
-    # for row in rows:
-    n1 = Node("Link", name=row['FROM'])
-    n2 = Node("Link", name=row['TO'])
-
-    try:
-        tx.merge(n1, "Link", "name")
-    except IndexError:
-        return
-    
-    try:
-        tx.merge(n2, "Link", "name")
-    except IndexError:
+    if (rows == None):
         return 
-    
-    timestamp = '2016-04-01'
-    #timestamp = date(*map(int, timestamp.split("-")))
 
-    rel = Relationship(n1, "SENT TO", n2, 
-                       timestamp=timestamp, 
-                       occurence=row['OCCURENCE'])
-    tx.merge(rel)
-    tx.commit()
+    for row in rows:
+
+        tx = gc.begin()
+        n1 = Node("Link", name=row['FROM'])
+        n2 = Node("Link", name=row['TO'])
+
+        try:
+            tx.merge(n1, "Link", "name")
+        except IndexError:
+            return
+        
+        try:
+            tx.merge(n2, "Link", "name")
+        except IndexError:
+            return 
+        
+        timestamp = '2016-04-01'
+        #timestamp = date(*map(int, timestamp.split("-")))
+
+        rel = Relationship(n1, "SENT TO", n2, 
+                        timestamp=timestamp, 
+                        occurence=row['OCCURENCE'])
+        tx.merge(rel)
+        tx.commit()
 
 if __name__ == "__main__":
     processData()
