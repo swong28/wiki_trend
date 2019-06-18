@@ -57,7 +57,7 @@ def createNodes(partition):
     tx.commit()
 
 def createRelationships(row):
-    gc = Graph('http://3.217.252.116/7474/',
+    gc = Graph('bolt://3.217.252.116',
                password='wong1234')
 
     tx = gc.begin()
@@ -76,7 +76,7 @@ def createRelationships(row):
         return 
     
     timestamp = '2016-04-01'
-    timestamp = date(*map(int, timestamp.split("-")))
+    #timestamp = date(*map(int, timestamp.split("-")))
 
     rel = Relationship(n1, "SENT TO", n2, 
                        timestamp=timestamp, 
