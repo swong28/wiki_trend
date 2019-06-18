@@ -5,6 +5,8 @@ from py2neo import Node, Graph, Relationship
 from pyspark import SparkContext
 from pyspark.sql import SparkSession, SQLContext
 
+from datetime import date, datetime
+
 def processData():
     # Begin Spark Session
     spark = SparkSession.builder.appName("wiki-trend").getOrCreate()
@@ -15,7 +17,6 @@ def processData():
     sql_context = SQLContext(sc)
 
     # Pre-process Data
-    # path2 = "./data/2016_shorted.tsv"
     path = "s3a://insight-wiki-clickstream/2016_04_en_clickstream.tsv"
     # path = "./data/2016_04_en_clickstream.tsv"
     raw = loadFiles(path, sc)
@@ -29,10 +30,6 @@ def processData():
     # print(wikiDF.show())
     
     wikiDF.rdd.map(createRelationships).collect()
-    # for row in wikiDF.rdd.collect():
-    #     createRelationships(row)
-    
-    # sc.parallelize(wikiDF.rdd.collect()).foreachPartition(createRelationships)
 
 def createLinkNodes(sql_context, sc):
     distinct_links = sql_context.sql("""
@@ -60,16 +57,30 @@ def createNodes(partition):
     tx.commit()
 
 def createRelationships(row):
-    gc = Graph('bolt://34.236.37.208:7687',
+    gc = Graph('bolt://3.217.252.116',
                password='wong1234')
 
     tx = gc.begin()
     # for row in rows:
     n1 = Node("Link", name=row['FROM'])
     n2 = Node("Link", name=row['TO'])
-    rel = Relationship(n1, "SENT TO", n2)
-    tx.merge(n1, "Link", "name")
-    tx.merge(n2, "Link", "name")
+
+    try:
+        tx.merge(n1, "Link", "name")
+    except IndexError:
+        return
+    
+    try:
+        tx.merge(n2, "Link", "name")
+    except IndexError:
+        return 
+    
+    timestamp = '2016-04-01'
+    timestamp = date(*map(int, timestamp.split("-")))
+
+    rel = Relationship(n1, "SENT TO", n2, 
+                       timestamp=timestamp, 
+                       occurence=row['OCCURENCE'])
     tx.merge(rel)
     tx.commit()
 
