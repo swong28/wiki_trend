@@ -62,22 +62,25 @@ def createRelationships(rows):
 
     if (rows == None):
         return 
-
+    
+    tx = gc.begin()
     for row in rows:
 
-        tx = gc.begin()
+        
         n1 = Node("Link", name=row['FROM'])
         n2 = Node("Link", name=row['TO'])
 
         try:
             tx.merge(n1, "Link", "name")
         except IndexError:
-            return
+            print("This row's n1 contains error: ", row)
+            continue
         
         try:
             tx.merge(n2, "Link", "name")
         except IndexError:
-            return 
+            print("This row's n2 contains error: ", row)
+            continue 
         
         timestamp = '2016-04-01'
         #timestamp = date(*map(int, timestamp.split("-")))
@@ -86,7 +89,7 @@ def createRelationships(rows):
                         timestamp=timestamp, 
                         occurence=row['OCCURENCE'])
         tx.merge(rel)
-        tx.commit()
+    tx.commit()
 
 if __name__ == "__main__":
     processData()
