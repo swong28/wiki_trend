@@ -44,9 +44,12 @@ def articleRank(graph, wiki_page):
     '''
     )
 
+def betweenCloseness(graph, wiki_page):
+    return 
+
 if __name__ == "__main__":
-    gc = Graph('bolt://3.217.252.116',
-               password='wong1234')
-    temp = articleRank(gc, 'Barack_Obama')
+    gc = Graph('bolt://3.218.43.43:7687',
+               password='i-0d80de068d764340a')
+    temp = articleRank(gc, 'Chicago')
     print(temp.to_data_frame())
     # pageRank(gc, "Barack_Obama")
