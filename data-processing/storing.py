@@ -58,18 +58,17 @@ def createNodes(partition):
 
 def createRelationships(rows):
     gc = Graph('bolt://3.218.43.43:7687',
-               password='i-0d80de068d764340a')
+               password='wong1234')
 
     if (rows == None):
         return 
     
-    tx = gc.begin()
-    for row in rows:
-
-        
+    
+    for row in rows: 
         n1 = Node("Link", name=row['FROM'])
         n2 = Node("Link", name=row['TO'])
 
+        tx = gc.begin()
         try:
             tx.merge(n1, "Link", "name")
         except IndexError:
@@ -89,7 +88,7 @@ def createRelationships(rows):
                         timestamp=timestamp, 
                         occurence=row['OCCURENCE'])
         tx.merge(rel)
-    tx.commit()
+        tx.commit()
 
 if __name__ == "__main__":
     processData()
