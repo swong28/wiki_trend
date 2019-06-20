@@ -18,7 +18,7 @@ def pageRank(graph, wiki_page):
         
     RETURN algo.asNode(nodeId).name AS page,score
     ORDER BY score DESC
-    LIMIT 5git
+    LIMIT 5
     '''
     )
 

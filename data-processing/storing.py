@@ -17,8 +17,8 @@ def processData():
     sql_context = SQLContext(sc)
 
     # Pre-process Data
-    path = "s3a://insight-wiki-clickstream/2016_04_en_clickstream.tsv"
-    # path = "./data/2016_04_en_clickstream.tsv"
+    #path = "s3a://insight-wiki-clickstream/2016_04_en_clickstream.tsv"
+    path = "./data/2016_04_en_clickstream.tsv"
     raw = loadFiles(path, sc)
     wikiDF = cleanData(raw, spark)
 
@@ -57,18 +57,18 @@ def createNodes(partition):
     tx.commit()
 
 def createRelationships(rows):
-    gc = Graph('bolt://3.218.43.43:7687',
+    gc = Graph(#'bolt://localhost:7687',
+               'bolt://3.218.43.43:7687',
                password='wong1234')
 
     if (rows == None):
         return 
     
-    
-    for row in rows: 
+    for row in rows:
+        tx = gc.begin()
         n1 = Node("Link", name=row['FROM'])
         n2 = Node("Link", name=row['TO'])
 
-        tx = gc.begin()
         try:
             tx.merge(n1, "Link", "name")
         except IndexError:
@@ -84,7 +84,7 @@ def createRelationships(rows):
         timestamp = '2016-04-01'
         #timestamp = date(*map(int, timestamp.split("-")))
 
-        rel = Relationship(n1, "SENT TO", n2, 
+        rel = Relationship(n1, "SENT_TO", n2, 
                         timestamp=timestamp, 
                         occurence=row['OCCURENCE'])
         tx.merge(rel)

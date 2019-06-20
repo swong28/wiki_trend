@@ -7,7 +7,7 @@ from pyspark.sql import SparkSession, SQLContext
 
 from datetime import date, datetime
 
-from graphframes import *
+from graphframes import GraphFrame
 from pyspark import *
 from pyspark.sql import *
 

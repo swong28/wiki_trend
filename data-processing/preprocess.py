@@ -18,10 +18,11 @@ Returns:
 
 from pyspark import SparkContext
 from pyspark.sql import SparkSession, Row, SQLContext
+import os 
 
-path = "s3a://insight-wiki-clickstream/2016_04_en_clickstream.tsv"
+# path = "s3a://insight-wiki-clickstream/2016_04_en_clickstream.tsv"
 # path = "./data/2016_shorted.tsv"
-# path = "./data/2016_04_en_clickstream.tsv"
+path = "./data/2016_04_en_clickstream.tsv"
 
 def loadFiles(bucket_name, sc):
     """
@@ -60,6 +61,14 @@ def cleanData(raw, spark):
 
     return wikiDF
 
+def exportAsCSV(data_frame):
+    file_path = './data/generated/'
+    data_frame.write.format("csv").save(file_path)
+    print('SUCCESS')
+    os.system("cat /data/generated/p* > data/generated/combined.csv")
+    return 
+
+
 if __name__ == '__main__':
     # Begin Spark Session
     spark = SparkSession.builder.appName("wiki-trend").getOrCreate()
@@ -74,3 +83,5 @@ if __name__ == '__main__':
     wikiDF = cleanData(raw, spark)
 
     print(wikiDF.head(5))
+
+    exportAsCSV(wikiDF)
