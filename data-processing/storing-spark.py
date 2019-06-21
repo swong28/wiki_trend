@@ -22,6 +22,7 @@ def processData():
     # path = "s3a://insight-wiki-clickstream/2016_04_en_clickstream.tsv"
     # path = "./data/2016_04_en_clickstream.tsv"
     # path = "./data/2016_shorted.tsv"
+    path = "s3a://insight-wiki-clickstream/shortened.tsv"
 
     raw = loadFiles(path, sc)
     wikiDF = cleanData(raw, spark)
@@ -95,4 +96,5 @@ def createRelationships(rows):
         tx.commit()
 
 if __name__ == "__main__":
+    
     processData()

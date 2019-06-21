@@ -62,7 +62,7 @@ def cleanData(raw, spark):
     return wikiDF
 
 def exportAsCSV(data_frame):
-    data_frame.write.format("csv").save("s3a://modified-clickstream-data/")
+    data_frame.write.format("csv").save("s3a://modified-clickstream-data/Output")
     print('SUCCESS')
     return 
 
