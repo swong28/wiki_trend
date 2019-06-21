@@ -9,7 +9,9 @@ from datetime import date, datetime
 
 def processData():
     # Begin Spark Session
-    spark = SparkSession.builder.appName("wiki-trend").getOrCreate()
+    spark = SparkSession.builder.appName("wiki-trend")\
+            .config("spark.hadoop.fs.s3a.fast.upload","true")\
+            .getOrCreate()
 
     # Begin Spark Context
     sc = SparkContext.getOrCreate()
@@ -17,8 +19,10 @@ def processData():
     sql_context = SQLContext(sc)
 
     # Pre-process Data
-    #path = "s3a://insight-wiki-clickstream/2016_04_en_clickstream.tsv"
-    path = "./data/2016_04_en_clickstream.tsv"
+    # path = "s3a://insight-wiki-clickstream/2016_04_en_clickstream.tsv"
+    # path = "./data/2016_04_en_clickstream.tsv"
+    # path = "./data/2016_shorted.tsv"
+
     raw = loadFiles(path, sc)
     wikiDF = cleanData(raw, spark)
 

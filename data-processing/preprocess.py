@@ -21,8 +21,9 @@ from pyspark.sql import SparkSession, Row, SQLContext
 import os 
 
 # path = "s3a://insight-wiki-clickstream/2016_04_en_clickstream.tsv"
+path = "s3a://insight-wiki-clickstream/shortened.tsv"
 # path = "./data/2016_shorted.tsv"
-path = "./data/2016_04_en_clickstream.tsv"
+# path = "./data/2016_04_en_clickstream.tsv"
 
 def loadFiles(bucket_name, sc):
     """
@@ -58,20 +59,19 @@ def cleanData(raw, spark):
 
     # Convert to dataframe
     wikiDF = spark.createDataFrame(links)
-
     return wikiDF
 
 def exportAsCSV(data_frame):
-    file_path = './data/generated/'
-    data_frame.write.format("csv").save(file_path)
+    data_frame.write.format("csv").save("s3a://modified-clickstream-data/")
     print('SUCCESS')
-    os.system("cat /data/generated/p* > data/generated/combined.csv")
     return 
 
 
 if __name__ == '__main__':
     # Begin Spark Session
-    spark = SparkSession.builder.appName("wiki-trend").getOrCreate()
+    spark = SparkSession.builder.appName("wiki-trend")\
+            .config("spark.hadoop.fs.s3a.fast.upload","true")\
+            .getOrCreate()
 
     # Begin Spark Context
     sc = SparkContext.getOrCreate()
