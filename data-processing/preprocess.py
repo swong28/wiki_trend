@@ -29,7 +29,7 @@ def loadFiles(bucket_name, sc):
     """
     Load files in a aws bucket with name, bucket_name.
     """
-    return sc.textFile(bucket_name)
+    return sc.textFile(bucket_name, 10000)
 
 def cleanData(raw, spark):
     """
