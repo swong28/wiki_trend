@@ -20,9 +20,9 @@ def processData():
     sql_context = SQLContext(sc)
 
     # Pre-process Data
-    path = "s3a://insight-wiki-clickstream/2016_04_en_clickstream.tsv"
+    # path = "s3a://insight-wiki-clickstream/2016_04_en_clickstream.tsv"
     # path = "./data/2016_04_en_clickstream.tsv"
-    # path = "s3a://insight-wiki-clickstream/shortened.tsv"
+    path = "s3a://insight-wiki-clickstream/shortened.tsv"
 
     raw = loadFiles(path, sc)
     wikiDF = cleanData(raw, spark)
