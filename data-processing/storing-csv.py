@@ -34,13 +34,14 @@ def processData():
 
     for file in my_bucket.objects.all():
         if (file.key[:len(PREFIX)]==PREFIX):
-            writeTODB(file.key)
+            writeToDB(file.key)
 
 def writeToDB(filename):
     gc = Graph('bolt://3.218.43.43:7687',
                password='wong1234')
     
-    s3_link = "https://modified-clickstream-data.s3.amazonaws.com/" + filename
+    s3_link = "'https://modified-clickstream-data.s3.amazonaws.com/" \
+        + filename + "'"
     gc.run("""
     USING PERIODIC COMMIT 
     LOAD CSV FROM """+s3_link+""" AS line

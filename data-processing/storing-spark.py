@@ -6,6 +6,7 @@ from pyspark import SparkContext
 from pyspark.sql import SparkSession, SQLContext
 
 from datetime import date, datetime
+import time
 
 def processData():
     # Begin Spark Session
@@ -96,5 +97,6 @@ def createRelationships(rows):
         tx.commit()
 
 if __name__ == "__main__":
-    
+    start_time = time.time()
     processData()
+    print("--- %s seconds Used ---" %(time.time()-start_time))
