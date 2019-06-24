@@ -4,7 +4,7 @@ Insight Data Engineering</br>
 New York 2019B</br>
 
 ## Introduction
-
+Wiki Trend is a webapp to 
 
 ## Motivation
 
