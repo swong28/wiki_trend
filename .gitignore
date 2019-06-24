@@ -4,3 +4,4 @@ credentials.sh
 results.txt
 time_comparing.tsv
 */__pycahce__
+__pycahce__/
