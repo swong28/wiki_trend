@@ -37,7 +37,8 @@ def processData():
             writeToDB(file.key)
 
 def writeToDB(filename):
-    gc = Graph('bolt://3.218.43.43:7687',
+    gc = Graph('bolt://localhost:7687',
+               # 'bolt://3.218.43.43:7687',
                password='wong1234')
     
     s3_link = "'https://modified-clickstream-data.s3.amazonaws.com/" \
@@ -47,7 +48,7 @@ def writeToDB(filename):
     LOAD CSV FROM """+s3_link+""" AS line
     MERGE (n1:Link {name: line[0]})
     MERGE (n2:Link {name: line[2]})
-    MERGE (n1) -[r:SENT_TO {occurence: line[1]}]->(n2)
+    CREATE (n1) -[r:SENT_TO {occurence: line[1]}]->(n2)
     """)
 
 if __name__ == "__main__":

@@ -21,8 +21,7 @@ def processData():
 
     # Pre-process Data
     # path = "s3a://insight-wiki-clickstream/2016_04_en_clickstream.tsv"
-    # path = "./data/2016_04_en_clickstream.tsv"
-    path = "s3a://insight-wiki-clickstream/shortened.tsv"
+    path = "./data/shortened.tsv"
 
     raw = loadFiles(path, sc)
     wikiDF = cleanData(raw, spark)
@@ -34,43 +33,51 @@ def processData():
     # temp = wikiDF.rdd.map(createRelationships)
     # print(wikiDF.show())
     
+    createLinkNodes(sql_context, sc)
     wikiDF.rdd.foreachPartition(createRelationships)
 
 def createLinkNodes(sql_context, sc):
     distinct_links = sql_context.sql("""
-        SELECT derivedtable.NewColumn 
+        SELECT DISTINCT(derivedtable.NewColumn)
         FROM
         ( 
-            SELECT from as NewColumn FROM wiki_clicks 
+            SELECT FROM as NewColumn FROM wiki_clicks 
             UNION
-            SELECT to as NewColumn FROM wiki_clicks 
+            SELECT TO as NewColumn FROM wiki_clicks 
         ) derivedtable
         WHERE derivedtable.NewColumn IS NOT NULL
     """)
     link_nodes = distinct_links.rdd.map(
         lambda x: (Node("Link", name=x['NewColumn'])))
     
-    sc.parallelize(link_nodes.collect()).foreachPartition(createRelationships)
+    link_nodes.foreachPartition(createNodes)
 
 def createNodes(partition):
-    gc = Graph(password='wong1234')
+    gc = Graph('bolt://localhost:7687',
+                password='wong1234')
 
+    
     for node in partition:
         tx = gc.begin()
-        tx.merge(node, "Link", "name")
+        try:
+            tx.create(node)
+        except:
+            # It means the node is already created in the database before
+            continue
+        tx.commit()
     
-    tx.commit()
 
 def createRelationships(rows):
-    gc = Graph(#'bolt://localhost:7687',
-               'bolt://3.218.43.43:7687',
+    gc = Graph('bolt://localhost:7687',
+               #'bolt://3.218.43.43:7687',
                password='wong1234')
 
     if (rows == None):
         return 
-    
+        
+    tx = gc.begin()
     for row in rows:
-        tx = gc.begin()
+        
         n1 = Node("Link", name=row['FROM'])
         n2 = Node("Link", name=row['TO'])
 
@@ -87,13 +94,12 @@ def createRelationships(rows):
             continue 
         
         timestamp = '2016-04-01'
-        #timestamp = date(*map(int, timestamp.split("-")))
 
         rel = Relationship(n1, "SENT_TO", n2, 
                         timestamp=timestamp, 
                         occurence=row['OCCURENCE'])
-        tx.merge(rel)
-        tx.commit()
+        tx.create(rel)
+    tx.commit()
 
 if __name__ == "__main__":
     start_time = time.time()

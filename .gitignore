@@ -2,5 +2,5 @@
 /.vscode
 credentials.sh
 results.txt
-
+time_comparing.tsv
 */__pycahce__

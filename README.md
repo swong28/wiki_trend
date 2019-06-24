@@ -1,7 +1,30 @@
-# wiki_trend
+# Wiki Trend
 
-USING PERIODIC COMMIT 
-LOAD CSV FROM 'https://modified-clickstream-data.s3.amazonaws.com/part-00029-0f06face-ba40-4b4e-a2ba-d861e2902f93-c000.csv' AS line
-MERGE (n1:Link {name: line[0]})
-MERGE (n2:Link {name: line[2]})
-MERGE (n1) -[r:SENT_TO {occurence: line[1]}]->(n2)
+Insight Data Engineering</br>
+New York 2019B</br>
+
+## Introduction
+
+
+## Motivation
+
+
+## Demo
+
+
+## What does my project do?
+### Supported Queries
+
+
+### Data Source
+
+
+## Pipeline
+
+
+## Database Design
+### Why Neo4j?
+
+
+## Results
+

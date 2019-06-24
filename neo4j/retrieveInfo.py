@@ -4,13 +4,13 @@ def pageRank(graph, wiki_page):
     return graph.run(
     '''
     CALL algo.pageRank.stream(
-        'MATCH (:Link {name:"'''+wiki_page+'''"})-[*1..2]-(p:Link)
+        'MATCH (:Link {name:"'''+wiki_page+'''"})-[*1]-(p:Link)
             RETURN DISTINCT id(p) AS id',
         'MATCH (p1:Link)-[r]->(p2:Link) 
-            RETURN id(p1) AS source, id(p2) AS target, r.occurence AS weight',
+            RETURN id(p1) AS source, id(p2) AS target, r.OCCURENCE AS weight',
         {
         graph: 'cypher', 
-        iterations:30, 
+        iterations:10, 
         dampingFactor:0.7
         })
 

@@ -21,15 +21,14 @@ from pyspark.sql import SparkSession, Row, SQLContext
 import os 
 
 # path = "s3a://insight-wiki-clickstream/2016_04_en_clickstream.tsv"
-path = "s3a://insight-wiki-clickstream/shortened.tsv"
 # path = "./data/2016_shorted.tsv"
-# path = "./data/2016_04_en_clickstream.tsv"
+path = "./data/Actual/clickstream-enwiki-2018-11.tsv"
 
 def loadFiles(bucket_name, sc):
     """
     Load files in a aws bucket with name, bucket_name.
     """
-    return sc.textFile(bucket_name, 10000)
+    return sc.textFile(bucket_name)
 
 def cleanData(raw, spark):
     """
@@ -41,8 +40,10 @@ def cleanData(raw, spark):
     raw = raw.filter(lambda x: x != header)
     
     # Seperate the values by tabs
-    parts = raw.map(lambda x: x.split('\t'))
-    
+    #neo4j-admin doesn't support: quotes next to each other and escape quotes with '\""'
+    parts = raw.map(lambda x: x.replace("\r","").replace("\"", "").replace("\\", "").replace('"','').replace(',',''))
+    parts = parts.map(lambda x: x.split('\t'))
+        
     # filter empty rows
     parts = parts.filter(lambda x: len(x) == 4)
     parts = parts.filter(lambda x: (x[0]!='' and x[1]!='' 
@@ -66,7 +67,6 @@ def exportAsCSV(data_frame):
     print('SUCCESS')
     return 
 
-
 if __name__ == '__main__':
     # Begin Spark Session
     spark = SparkSession.builder.appName("wiki-trend")\
@@ -84,4 +84,4 @@ if __name__ == '__main__':
 
     print(wikiDF.head(5))
 
-    exportAsCSV(wikiDF)
+    # exportAsCSV(wikiDF)
