@@ -1,0 +1,36 @@
+html, body {
+  height: 100%; /*Fixes the height to 100% of the viewport*/
+}
+body {
+  margin: 0;
+  padding-top: 35px; /*50px for the height of the navbar + 37px for the offset*/
+  padding-bottom: 50px; /*50px for the height of the bottom navbar*/
+}
+.navbar-offset {
+    top: 37px; /*Offsets the top navbar 37px from the top of the viewport*/
+}
+.container-fluid.scrollable {
+  height: 100%; /*Sets the scrollable area to 100% of the viewport*/
+  text-align: center;
+  overflow: auto; /*Allows the scrollable area to have a scrollbar based on the height of its content*/
+}
+
+#background-pic {
+  border: 2px solid white;
+  padding: 100px;
+  align-content: center;
+  background: url('../images/background.jpg');
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+
+div.h1 {
+  text-align: center;
+}
+
+#search-input {
+    display: block;
+    margin: 0 auto 1em auto;
+    width: 90%;  /*280px;*/
+    border: 1px solid #818181;
+}

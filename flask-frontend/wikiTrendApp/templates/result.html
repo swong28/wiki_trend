@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block graph %}
+    <link rel="stylesheet" href="../static/css/result.css">
+
+    <script src="https://cdn.neo4jlabs.com/neovis.js/v1.0.0/neovis.js"></script>
+
+    <script
+            src="https://code.jquery.com/jquery-3.2.1.min.js"
+            integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+            crossorigin="anonymous">
+    </script>
+
+    <script src="../static/js/graphVisual.js">
+    </script>
+
+<div class="container-fluid scrollable d-flex jusitfy-content-between flex-wrap flex-mid-nowrap align-items-center pt3 pb-2 mb-3 border-bottom">
+    <h1>Chicago</h1>
+</div>
+
+<div class="text-center jusitfy-content-between align-items-center flex-mid-nowrap flex-wrap">
+    <h4>Graph Visualization</h4>
+    <div>
+        <canvas id="viz">
+
+        </canvas>
+    </div>
+    <button class="btn btn-primary" value="Stabilize" onclick="{stabilize}">Stabilize</button>
+</div>
+
+<div class="text-center jusitfy-content-between align-items-center flex-mid-nowrap flex-wrap">
+    <h4>PageRank Results</h4>
+    <div class="table-responsive">
+        <table class="table table-striped table-sm">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Wikipedia Page</th>
+                    <th>Score</th>
+                    <th>Link</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>Random</td>
+                    <td>Random</td>
+                    <td>Random</td>
+                </tr>
+            </tbody>
+            <tbody>
+                    <tr>
+                        <td>2</td>
+                        <td>Random</td>
+                        <td>Random</td>
+                        <td>Random</td>
+                    </tr>
+            </tbody>
+            <tbody>
+                    <tr>
+                        <td>3</td>
+                        <td>Random</td>
+                        <td>Random</td>
+                        <td>Random</td>
+                    </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="text-center jusitfy-content-between align-items-center flex-mid-nowrap flex-wrap">
+    <h6>Thank you for using Wiki Trend. Hope you found something insightful!</h6>
+</div>
+{% endblock %}

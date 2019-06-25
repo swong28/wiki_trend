@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block graph %}
+<link rel="stylesheet" href="../static/css/index.css">
+<div class="container-fluid scrollable" id="background-pic">
+    <h1>Welcome!</h1>
+    <p><b>Wiki Trend</b> helps you to discover your hidden interests.<p>
+    <form>
+        <div class="form-group justify-content-center align-items-center">
+            <input class="form-control col-md-4" id="search-input" type="text" placeholder="Search" aria-label="Search">
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+    
+</div>
+    
+{% endblock %}

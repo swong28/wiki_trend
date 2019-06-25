@@ -11,9 +11,3 @@ class neo4jConnector():
         Initialize neo4j connector with my neo4j username and password.
         """
         self.graph = Graph(password='wong1234')
-
-    def close(self):
-        """
-        Close the neo4j database
-        """
-        self._diver.close()

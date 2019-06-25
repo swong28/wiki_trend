@@ -1,1 +1,0 @@
-neo4j-admin import --nodes:Link ./data/Actual/output/nodes/part-00000-5a6a914c-b52d-4b72-b4ba-fa8bb61fecf1-c000.csv --relationships:SENT_TO ./data/Actual/output/relationships/part-00000-17f3a4a1-e11f-4393-94d8-778761044766-c000.csv --id-type STRING --multiline-fields false --ignore-extra-columns true --ignore-missing-nodes true
