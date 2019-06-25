@@ -19,9 +19,10 @@
 
 <div class="text-center jusitfy-content-between align-items-center flex-mid-nowrap flex-wrap">
     <h4>Graph Visualization</h4>
+    <h5>{<%= NEO4J_BOLT %>}</h5>
     <div>
         <canvas id="viz">
-
+            <body onload="draw()"></body>
         </canvas>
     </div>
     <button class="btn btn-primary" value="Stabilize" onclick="{stabilize}">Stabilize</button>

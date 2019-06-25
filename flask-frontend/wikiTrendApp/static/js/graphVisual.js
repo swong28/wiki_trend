@@ -1,22 +1,32 @@
 var viz;
-function draw() {
+function draw(wikipedia_page) {
     var config = {
         container_id: "viz",
-        server_url: $("#url").val(),
-        server_user: $("#user").val(),
-        server_password: $("#pass").val(),
-        labels: {},
-        relationships: {},
-        initial_cypher: $("#cypher").val()
+        server_url: process.env.NEO4J_BOLT,
+        server_user: process.env.NEO4J_USERNAME,
+        server_password: process.env.NEO4J_PASSWORD,
+        labels: {
+            "Link": {
+                "caption": "name",
+                "size": "pagerank"
+            }
+        },
+        relationships: {
+            "SENT_TO": {
+                "thickness": "OCCURENCE",
+                "caption": false
+            }
+        },
+        initial_cypher: "MATCH (n)-[r:INTERACTS]->(m) RETURN * LIMIT 25"
     };
     config.labels["name"] = {
-        "caption": $("#caption").val(),
-        "size": $("#size").val(),
-        "community": $("#community").val(),
+        "caption": "name",
+        "size": "pagerank",
+        "community": "community",
     };
-    config.relationships[$("#rel_type").val()] = {
-        "thickness": $("#thickness").val(),
-        "caption": $("#rel_caption").val(),
+    config.relationships["SENT_TO"] = {
+        "thickness": "OCCURENCE",
+        "caption": false,
     }
     viz = new NeoVis.default(config);
     viz.render();

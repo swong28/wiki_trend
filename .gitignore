@@ -1,6 +1,6 @@
 /data
 /.vscode
-credentials.sh
+credential.sh
 results.txt
 time_comparing.tsv
 
