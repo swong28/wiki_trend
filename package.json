@@ -1,8 +1,0 @@
-{
-  "devDependencies": {
-    "posthtml-expressions": "^1.1.1"
-  },
-  "dependencies": {
-    "process": "^0.11.10"
-  }
-}

@@ -1,5 +1,4 @@
-from preprocess import * 
-# from neo4j_connector import * 
+from preprocessData import * 
 
 from py2neo import Graph
 from pyspark import SparkContext
@@ -7,7 +6,7 @@ from pyspark.sql import SparkSession, SQLContext
 import boto3
 import time
 
-def processData():
+def storeNeo4jFromS3(path):
     # Begin Spark Session
     spark = SparkSession.builder.appName("wiki-trend")\
             .config("spark.hadoop.fs.s3a.fast.upload","true")\
@@ -17,12 +16,10 @@ def processData():
     sc = SparkContext.getOrCreate()
 
     # Pre-process Data
-    # path = "s3a://insight-wiki-clickstream/2016_04_en_clickstream.tsv"
-    path = "s3a://insight-wiki-clickstream/shortened.tsv"
-
-    # Export as CSV
     raw = loadFiles(path, sc)
     wikiDF = cleanData(raw, spark)
+
+    # Export as CSV
     exportAsCSV(wikiDF)
 
     # s3 Bucket files to neo4j
@@ -37,9 +34,7 @@ def processData():
             writeToDB(file.key)
 
 def writeToDB(filename):
-    gc = Graph('bolt://localhost:7687',
-               # 'bolt://3.218.43.43:7687',
-               password='wong1234')
+    gc = neo4jConnector().graph
     
     s3_link = "'https://modified-clickstream-data.s3.amazonaws.com/" \
         + filename + "'"
@@ -53,5 +48,6 @@ def writeToDB(filename):
 
 if __name__ == "__main__":
     start_time = time.time()
-    processData()
+    path = "s3a://insight-wiki-clickstream/2016_04_en_clickstream.tsv"
+    processData(path)
     print("--- %s seconds Used ---" %(time.time()-start_time))

@@ -1,28 +1,8 @@
-"""
-Jason Wong
-June 10, 2019
-Wiki Trend
-
-This script reads all of the tsv files in an Aamzon S3 Bucket.
-
-The main function
-
-Args:
-    item1
-    item2
-
-Returns:
-    Description of the return
-
-"""
-
 from pyspark import SparkContext
 from pyspark.sql import SparkSession, Row, SQLContext
 import os 
 
-# path = "s3a://insight-wiki-clickstream/2016_04_en_clickstream.tsv"
-# path = "./data/2016_shorted.tsv"
-path = "./data/Actual/clickstream-enwiki-2018-11.tsv"
+from py2neo import Graph 
 
 def loadFiles(bucket_name, sc):
     """
@@ -62,12 +42,30 @@ def cleanData(raw, spark):
     wikiDF = spark.createDataFrame(links)
     return wikiDF
 
-def exportAsCSV(data_frame):
-    data_frame.write.format("csv").save("s3a://modified-clickstream-data/Output")
+def exportAsCSV(data_frame, path_name):
+    """
+    Export from Spark to CSV files and save to s3.
+    """
+
+    data_frame.write.format("csv").save(path_name)
     print('SUCCESS')
     return 
 
+class neo4jConnector():
+    """
+    Connector for neo4j database from Spark
+    """
+
+    def __init__(self):
+        """
+        Initialize neo4j connector with my neo4j username and password.
+        """
+        self.graph = Graph(os.environ.get('NEO4J_BOLT'),
+                           password=os.environ.get('NEO4J_PASSWORD'))
+
 if __name__ == '__main__':
+    path = "s3a://insight-wiki-clickstream/2016_04_en_clickstream.tsv"
+
     # Begin Spark Session
     spark = SparkSession.builder.appName("wiki-trend")\
             .config("spark.hadoop.fs.s3a.fast.upload","true")\

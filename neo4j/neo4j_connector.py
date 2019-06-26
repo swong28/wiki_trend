@@ -10,4 +10,8 @@ class neo4jConnector():
         """
         Initialize neo4j connector with my neo4j username and password.
         """
-        self.graph = Graph(password='wong1234')
+        self.graph = Graph(os.environ.get('NEO4J_BOLT'),
+                           password=os.environ.get('NEO4J_PASSWORD'))
+
+if __name__ == '__main__':
+    print(neo4jConnector().graph)
