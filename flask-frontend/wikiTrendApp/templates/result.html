@@ -19,16 +19,15 @@
 
 <div class="text-center jusitfy-content-between align-items-center flex-mid-nowrap flex-wrap">
     <h4>Graph Visualization</h4>
-    <h5>{<%= NEO4J_BOLT %>}</h5>
     <div>
-        <canvas id="viz">
-            <body onload="draw()"></body>
-        </canvas>
+        <body onload="draw('Chicago')">
+            <div id="viz"></div>
+        </body>
     </div>
-    <button class="btn btn-primary" value="Stabilize" onclick="{stabilize}">Stabilize</button>
+    <button class="btn btn-primary" value="Stabilize" onclick="stabilize()">Stabilize</button>
 </div>
 
-<div class="text-center jusitfy-content-between align-items-center flex-mid-nowrap flex-wrap">
+<div class="text-center jusitfy-content-between align-items-center flex-mid-nowrap flex-wrap border-bottom">
     <h4>PageRank Results</h4>
     <div class="table-responsive">
         <table class="table table-striped table-sm">

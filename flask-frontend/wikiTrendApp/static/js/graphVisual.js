@@ -2,9 +2,9 @@ var viz;
 function draw(wikipedia_page) {
     var config = {
         container_id: "viz",
-        server_url: process.env.NEO4J_BOLT,
-        server_user: process.env.NEO4J_USERNAME,
-        server_password: process.env.NEO4J_PASSWORD,
+        server_url: "bolt://3.220.71.43:7687",
+        server_user: "neo4j",
+        server_password: "wong1234",
         labels: {
             "Link": {
                 "caption": "name",
@@ -17,7 +17,7 @@ function draw(wikipedia_page) {
                 "caption": false
             }
         },
-        initial_cypher: "MATCH (n)-[r:INTERACTS]->(m) RETURN * LIMIT 25"
+        initial_cypher: 'MATCH (n {name:"'+wikipedia_page+'"})-[r:SENT_TO]->(m) RETURN * ORDER BY r.OCCURENCE DESC LIMIT 50'
     };
     config.labels["name"] = {
         "caption": "name",
@@ -31,4 +31,8 @@ function draw(wikipedia_page) {
     viz = new NeoVis.default(config);
     viz.render();
     console.log(viz);
+}
+
+function stabilize() {
+    viz.stabilize();
 }

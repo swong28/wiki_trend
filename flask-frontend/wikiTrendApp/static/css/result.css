@@ -3,7 +3,7 @@ html, body {
 }
 
 body {
-    margin: 0;
+    margin: 0 auto;
     padding-top: 35px; /*50px for the height of the navbar + 37px for the offset*/
     padding-bottom: 50px; /*50px for the height of the bottom navbar*/
 }
@@ -31,9 +31,9 @@ body {
     margin: 0 auto 1em auto;
 }
 #viz {
-  width: 75%;
-  height:600px;
-  border: 1px solid lightgray;
-  font: 22pt arial;
-  margin: 10px;
+  width: 60%;
+  height:500px;
+  border: 5px solid lightgray;
+  font: 20pt arial;
+  margin: 0 auto;
 }
