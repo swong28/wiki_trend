@@ -18,10 +18,8 @@ def processData(path, processNode=False):
     sql_context = SQLContext(sc)
 
     # Pre-process Data
-
     raw = loadFiles(path, sc)
     wikiDF = cleanData(raw, spark)
-
     sql_context.registerDataFrameAsTable(wikiDF, "wiki_clicks")
 
     if (processNode):
@@ -38,10 +36,13 @@ def processData(path, processNode=False):
     
     # Export Relationship CSV
     nodes_relationship = createRelationship(sql_context, sc, path)
+
+    # Clean Relationship CSV with proper header
     nodes_relationship = nodes_relationship.withColumnRenamed("FROM", ":START_ID(Link)")\
         .withColumnRenamed("TO", ":END_ID(Link)")\
         .withColumnRenamed("OCCURENCE", "OCCURENCE:INT")
 
+    # Store CSV to S3
     nodes_relationship\
         .write.format("com.databricks.spark.csv")\
         .mode("Append")\
@@ -65,30 +66,6 @@ def processFiles(folderPath, nodePath, fileType):
             except:
                 continue
         print("FINISHED PROCESSING FILE: ", file)
-        
-
-def createLinkNodes(sql_context, sc):
-    distinct_links = sql_context.sql("""
-        SELECT DISTINCT(derivedtable.NAME), derivedtable.NAME AS PROPERTY_NAME
-        FROM
-        ( 
-            SELECT FROM as NAME FROM wiki_clicks 
-            UNION
-            SELECT TO as NAME FROM wiki_clicks 
-        ) derivedtable
-        WHERE derivedtable.NAME IS NOT NULL
-    """)
-    
-    return distinct_links
-
-def createRelationship(sql_context, sc, filename):
-    timestamp = filename[-11:-4] + '-01'
-    relationships = sql_context.sql("""
-        SELECT *, '"""+timestamp+"""' AS TIME
-        FROM wiki_clicks
-        """)
-    
-    return relationships
 
 if __name__ == "__main__":
     start_time = time.time()
