@@ -1,6 +1,10 @@
 {% extends "base.html" %}
+{% block topic %}
+<a class="nav-link" href="/">Search Again</a>
+{% endblock %}
+
 {% block graph %}
-    <link rel="stylesheet" href="../static/css/result.css">
+    <link rel="stylesheet" href="../static/css/results.css">
 
     <script src="https://cdn.neo4jlabs.com/neovis.js/v1.0.0/neovis.js"></script>
 
@@ -14,13 +18,13 @@
     </script>
 
 <div class="container-fluid scrollable d-flex jusitfy-content-between flex-wrap flex-mid-nowrap align-items-center pt3 pb-2 mb-3 border-bottom">
-    <h1>Chicago</h1>
+    <h1>{{ search }}</h1>
 </div>
 
 <div class="text-center jusitfy-content-between align-items-center flex-mid-nowrap flex-wrap">
     <h4>Graph Visualization</h4>
     <div>
-        <body onload="draw('Chicago')">
+        <body onload="draw('{{ search }}')">
             <div id="viz"></div>
         </body>
     </div>
@@ -28,7 +32,7 @@
 </div>
 
 <div class="text-center jusitfy-content-between align-items-center flex-mid-nowrap flex-wrap border-bottom">
-    <h4>PageRank Results</h4>
+    <h4>Outgoing Results</h4>
     <div class="table-responsive">
         <table class="table table-striped table-sm">
             <thead>
@@ -36,33 +40,18 @@
                     <th>#</th>
                     <th>Wikipedia Page</th>
                     <th>Score</th>
-                    <th>Link</th>
+
                 </tr>
             </thead>
+            {% for i in range(1, len) %}
             <tbody>
                 <tr>
-                    <td>1</td>
-                    <td>Random</td>
-                    <td>Random</td>
-                    <td>Random</td>
+                    <td>{{ i }}</td>
+                    <td>{{ results[i]['page'] }}</td>
+                    <td>{{ results[i]['score'] }}</td>
                 </tr>
             </tbody>
-            <tbody>
-                    <tr>
-                        <td>2</td>
-                        <td>Random</td>
-                        <td>Random</td>
-                        <td>Random</td>
-                    </tr>
-            </tbody>
-            <tbody>
-                    <tr>
-                        <td>3</td>
-                        <td>Random</td>
-                        <td>Random</td>
-                        <td>Random</td>
-                    </tr>
-            </tbody>
+            {% endfor %}
         </table>
     </div>
 </div>

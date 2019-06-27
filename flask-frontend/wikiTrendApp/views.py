@@ -1,11 +1,66 @@
 from wikiTrendApp import app
-from flask import request, jsonify, render_template
+from flask import flash, request, render_template, redirect
 
-@app.route('/')
-@app.route('/index')
+from py2neo import Graph
+from wikiTrendApp.neo4j_connector import neo4jConnector
+
+@app.route('/', methods=['GET', 'POST'])
+@app.route('/index', methods=['GET', 'POST'])
 def index():
-    return render_template("index.html", query="")
+    if request.method == 'POST':
+        search = request.form['search']
+        return search_results(search)
 
-@app.route('/result')
-def search():
-    return render_template("result.html")
+    return render_template("index.html")
+
+@app.route('/results')
+def search_results(search):
+    #results = pageRank(search)
+    results = PageRankTemp(search)
+    if not results:
+        return redirect('/')
+    
+    else:
+        return render_template("results.html", len=len(results), results=results, search=search)
+
+def PageRankTemp(search):
+    gc = neo4jConnector().graph
+    temp = gc.run(
+    '''
+    MATCH (n:Link {name: "Chicago"})
+
+    CALL algo.pageRank.stream('Link', 'SENT_TO', {iterations:20, dampingFactor:0.85, sourceNodes: [n]})
+    YIELD nodeId, score
+
+    RETURN algo.asNode(nodeId).name AS page, score
+    ORDER BY score DESC
+    LIMIT 6  
+    '''
+    )
+    return temp.data()
+
+def pageRank(search):
+    gc = neo4jConnector().graph
+    temp = gc.run(
+    '''
+    CALL algo.pageRank.stream(
+        'MATCH (:Link {name:"'''+search+'''"})-[*1]-(p:Link)
+            RETURN DISTINCT id(p) AS id',
+        'MATCH (p1:Link)-[r]->(p2:Link) 
+            RETURN id(p1) AS source, id(p2) AS target, r.OCCURENCE AS weight',
+        {
+        graph: 'cypher', 
+        iterations:10, 
+        dampingFactor:0.7
+        })
+
+    YIELD nodeId, score
+        
+    RETURN algo.asNode(nodeId).name AS page,score
+    ORDER BY score DESC
+    LIMIT 5
+    '''
+    )
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=80, debug=True)

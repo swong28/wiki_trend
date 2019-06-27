@@ -81,5 +81,4 @@ if __name__ == '__main__':
     wikiDF = cleanData(raw, spark)
 
     print(wikiDF.head(5))
-
     # exportAsCSV(wikiDF)
