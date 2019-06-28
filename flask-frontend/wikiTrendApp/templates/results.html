@@ -39,8 +39,8 @@
                 <tr>
                     <th>#</th>
                     <th>Wikipedia Page</th>
-                    <th>Score</th>
-
+                    <th>frequency</th>
+                    <th>Time</th>
                 </tr>
             </thead>
             {% for i in range(1, len) %}
@@ -48,7 +48,8 @@
                 <tr>
                     <td>{{ i }}</td>
                     <td>{{ results[i]['page'] }}</td>
-                    <td>{{ results[i]['score'] }}</td>
+                    <td>{{ results[i]['frequency'] }}</td>
+                    <td>{{ results[i]['date'][:7] }}</td>
                 </tr>
             </tbody>
             {% endfor %}

@@ -16,28 +16,36 @@ def index():
 @app.route('/results')
 def search_results(search):
     #results = pageRank(search)
-    results = PageRankTemp(search)
+    results = HighestOutOccurence(search)
     if not results:
         return redirect('/')
     
     else:
         return render_template("results.html", len=len(results), results=results, search=search)
 
-def PageRankTemp(search):
+def HighestOutOccurence(search):
     gc = neo4jConnector().graph
     temp = gc.run(
     '''
-    MATCH (n:Link {name: "Chicago"})
-
-    CALL algo.pageRank.stream('Link', 'SENT_TO', {iterations:20, dampingFactor:0.85, sourceNodes: [n]})
-    YIELD nodeId, score
-
-    RETURN algo.asNode(nodeId).name AS page, score
-    ORDER BY score DESC
-    LIMIT 6  
+    MATCH (n:Link {name:"'''+search+'''"})-[r:SENT_TO]->(m:Link) 
+    USING INDEX n:Link(name)
+    RETURN m.name AS page, r.OCCURENCE AS frequency, r.TIME AS date 
+    ORDER BY r.OCCURENCE DESC 
+    LIMIT 20
     '''
-    )
-    return temp.data()
+    ).data()
+    print(temp)
+    results = []
+    resultsName = set()
+
+    for i in range(len(temp)):
+        if (len(resultsName) > 5):
+            break 
+        if temp[i]['page'] not in resultsName:
+            results.append(temp[i])
+            resultsName.add(temp[i]['page'])
+
+    return results
 
 def pageRank(search):
     gc = neo4jConnector().graph

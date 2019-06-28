@@ -32,7 +32,7 @@ def processData(path, processNode=False):
             .write.format("com.databricks.spark.csv")\
             .mode("Append")\
             .option("header", "true")\
-            .save("s3a://modified-clickstream-data/output/nodes/")
+            .save("s3a://modified-clickstream-data/temp/nodes/")
     
     # Export Relationship CSV
     nodes_relationship = createRelationship(sql_context, sc, path)
@@ -47,7 +47,7 @@ def processData(path, processNode=False):
         .write.format("com.databricks.spark.csv")\
         .mode("Append")\
         .option("header", "false")\
-        .save("s3a://modified-clickstream-data/output/relationships/")
+        .save("s3a://modified-clickstream-data/temp/relationships/")
 
 def processFiles(folderPath, nodePath, fileType):
     s3 = boto3.resource('s3')
