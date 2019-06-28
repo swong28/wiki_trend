@@ -31,11 +31,10 @@ def HighestOutOccurence(search):
     USING INDEX n:Link(name)
     RETURN m.name AS page, r.OCCURENCE AS frequency, r.TIME AS date 
     ORDER BY r.OCCURENCE DESC 
-    LIMIT 20
+    LIMIT 50
     '''
     ).data()
 
-    print(temp)
     results = []
     resultsName = set()
 
