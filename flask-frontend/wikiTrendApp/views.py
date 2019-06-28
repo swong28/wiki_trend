@@ -34,6 +34,7 @@ def HighestOutOccurence(search):
     LIMIT 20
     '''
     ).data()
+
     print(temp)
     results = []
     resultsName = set()
