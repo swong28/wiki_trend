@@ -1,7 +1,6 @@
 # import airflow packages
 from airflow import DAG
-from airflow.operators.python_operator import PythonOperator
-from airflow.operators.bash_operator import BashOperator
+from airflow.contrib.operators import SSHOperator
 
 # other packages
 from datetime import datetime
