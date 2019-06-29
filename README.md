@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Wiki Trend
 
 Insight Data Engineering</br>
@@ -30,7 +29,3 @@ A user can specify the title of a Wikipedia article.
 
 
 ## Results
-
-=======
-# wiki_trend
->>>>>>> master
