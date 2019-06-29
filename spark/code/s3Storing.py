@@ -5,6 +5,7 @@ from pyspark.sql import SparkSession, SQLContext
 
 import boto3
 import time
+import sys
 
 def processData(path, processNode=False):
     # Begin Spark Session
@@ -69,8 +70,8 @@ def processFiles(folderPath, nodePath, fileType):
 
 if __name__ == "__main__":
     start_time = time.time()
-    FOLDER_PATH = "s3a://insight-wiki-clickstream"
-    FILE = "clickstream-enwiki-2019-05.tsv"
+    FOLDER_PATH = sys.argv[1]
+    FILE = sys.argv[2]
     PREFIX = ".tsv"
     processFiles(FOLDER_PATH, FILE, PREFIX)
     print("--- %s seconds Used ---" %(time.time()-start_time))

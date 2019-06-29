@@ -17,3 +17,25 @@ default_args = {
     'retries': 1,
     'retry_delay': timedelta(days=1),
 }
+
+dag = DAG('ssh_operator', 
+          default_args=default_args, 
+          schedule_interval=timedelta(days=1))
+
+t1 = SSHOperator(task_id='new_file_to_spark', 
+                 ssh_conn_id="remote_vm_conn", 
+                 command="python3 ./wiki-trend/s3Storing.py s3a://insight-wiki-clickstream/clickstream-enwiki-2015-01.tsv", 
+                 dag=dag)
+
+t2 = SSHOperator(task_id='load_to_neo4j',
+                 ssh_conn_id="neo4j_conn",
+                 command="source ./wiki-trend/spark/code/run.sh",
+                 dag=dag)
+
+t2.set_upstream(t1)
+
+
+
+
+
+
