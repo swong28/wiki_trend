@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block topic %}
+<a class="nav-link" href="/">Search Again</a>
+{% endblock %}
+
+{% block graph %}
+    <link rel="stylesheet" href="../static/css/results.css">
+
+    <script src="https://cdn.neo4jlabs.com/neovis.js/v1.0.0/neovis.js"></script>
+
+    <script
+            src="https://code.jquery.com/jquery-3.2.1.min.js"
+            integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+            crossorigin="anonymous">
+    </script>
+
+    <script src="../static/js/graphVisual.js">
+    </script>
+
+<div class="container-fluid scrollable d-flex jusitfy-content-between flex-wrap flex-mid-nowrap align-items-center pt3 pb-2 mb-3 border-bottom">
+    <h1>{{ search }}</h1>
+</div>
+
+<div class="text-center jusitfy-content-between align-items-center flex-mid-nowrap flex-wrap">
+    <h4>Graph Visualization</h4>
+    <div>
+        <body onload="draw('{{ search }}')">
+            <div id="viz"></div>
+        </body>
+    </div>
+    <button class="btn btn-primary" value="Stabilize" onclick="stabilize()">Stabilize</button>
+</div>
+
+<div class="text-center jusitfy-content-between align-items-center flex-mid-nowrap flex-wrap border-bottom">
+    <h4>Outgoing Results</h4>
+    <div class="table-responsive">
+        <table class="table table-striped table-sm">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Wikipedia Page</th>
+                    <th>frequency</th>
+                    <th>Time</th>
+                </tr>
+            </thead>
+            {% for i in range(0, len-1) %}
+            <tbody>
+                <tr>
+                    <td>{{ i+1 }}</td>
+                    <td>{{ results[i]['page'] }}</td>
+                    <td>{{ results[i]['frequency'] }}</td>
+                    <td>{{ results[i]['date'][:7] }}</td>
+                </tr>
+            </tbody>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+
+<div class="text-center jusitfy-content-between align-items-center flex-mid-nowrap flex-wrap">
+    <h6>Thank you for using Wiki Trend. Hope you found something insightful!</h6>
+</div>
+{% endblock %}

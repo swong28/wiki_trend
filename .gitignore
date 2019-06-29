@@ -1,0 +1,10 @@
+/data
+/.vscode
+credential.sh
+results.txt
+time_comparing.tsv
+/node_modules
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]

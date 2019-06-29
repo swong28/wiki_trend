@@ -1,0 +1,39 @@
+html, body {
+  height: 100%; /*Fixes the height to 100% of the viewport*/
+}
+
+body {
+    margin: 0 auto;
+    padding-top: 35px; /*50px for the height of the navbar + 37px for the offset*/
+    padding-bottom: 50px; /*50px for the height of the bottom navbar*/
+}
+
+.navbar-offset {
+    top: 37px; /*Offsets the top navbar 37px from the top of the viewport*/
+}
+
+.container-fluid.scrollable {
+    margin: 10px;
+    text-align: center;
+    background-color: lightgoldenrodyellow;
+    overflow: auto; /*Allows the scrollable area to have a scrollbar based on the height of its content*/
+}
+
+.h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
+    margin: 20px;
+    font-weight: 500;
+    line-height: 1.2;
+    text-align: center;
+}
+
+.button {
+    align-content: center;
+    margin: 0 auto 1em auto;
+}
+#viz {
+  width: 60%;
+  height:500px;
+  border: 5px solid lightgray;
+  font: 20pt arial;
+  margin: 0 auto;
+}
