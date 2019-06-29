@@ -17,13 +17,15 @@ default_args = {
     'retry_delay': timedelta(days=1),
 }
 
+now = datetime.now()
+
 dag = DAG('ssh_operator', 
           default_args=default_args, 
           schedule_interval=timedelta(days=1))
 
 t1 = SSHOperator(task_id='new_file_to_spark', 
                  ssh_conn_id="remote_vm_conn", 
-                 command="python3 ./wiki-trend/s3Storing.py s3a://insight-wiki-clickstream/clickstream-enwiki-2015-01.tsv", 
+                 command="python3 ./wiki-trend/s3Storing.py s3a://insight-wiki-clickstream/clickstream-enwiki-"+str(now.year)+"-"+str(now.month)+".tsv", 
                  dag=dag)
 
 t2 = SSHOperator(task_id='load_to_neo4j',
