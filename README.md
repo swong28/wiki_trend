@@ -19,13 +19,13 @@ Since people read a lot of Wikipedia posts and there are millions of related art
 A user can specify the title of a Wikipedia article.
 
 ### Data Source
->30 GB Wikipedia monthly aggregated clickstream data with over 3 millions recorded articles, and 400 millions clickstream.
+~30 GB Wikipedia monthly aggregated clickstream data with over 3 millions recorded articles, and 400 millions clickstream.
 
 ## Pipeline
 { ADD IMAGE OF PIPELINE }
 
 ## Database Design
 ### Why Neo4j?
-
+Neo4j is a NoSQL 
 
 ## Results
