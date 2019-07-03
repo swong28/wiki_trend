@@ -22,7 +22,7 @@ A user can specify the title of a Wikipedia article.
 ~30 GB Wikipedia monthly aggregated clickstream data with over 3 millions recorded articles, and 400 millions clickstream.
 
 ## Pipeline
-![Pipeline for Wiki Trends](link-to-image)
+![Pipeline for Wiki Trends](https://github.com/swong28/wiki_trend/blob/develop/pipeline/pipeline.png)
 
 ## Database Design
 ### Why Neo4j?
