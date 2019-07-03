@@ -33,7 +33,7 @@ def processData(path, processNode=False):
             .write.format("com.databricks.spark.csv")\
             .mode("Append")\
             .option("header", "true")\
-            .save("s3a://modified-clickstream-data/temp/nodes/")
+            .save("s3a://modified-clickstream-data/output/nodes/")
     
     # Export Relationship CSV
     nodes_relationship = createRelationship(sql_context, sc, path)
@@ -48,7 +48,7 @@ def processData(path, processNode=False):
         .write.format("com.databricks.spark.csv")\
         .mode("Append")\
         .option("header", "false")\
-        .save("s3a://modified-clickstream-data/temp/relationships/")
+        .save("s3a://modified-clickstream-data/output/relationships/")
 
 def processFiles(folderPath, nodePath, fileType):
     s3 = boto3.resource('s3')
@@ -68,6 +68,29 @@ def processFiles(folderPath, nodePath, fileType):
                 continue
         print("FINISHED PROCESSING FILE: ", file)
 
+def createLinkNodes(sql_context, sc):
+    distinct_links = sql_context.sql("""
+        SELECT DISTINCT(derivedtable.NAME), derivedtable.NAME AS PROPERTY_NAME
+        FROM
+        ( 
+            SELECT FROM as NAME FROM wiki_clicks 
+            UNION
+            SELECT TO as NAME FROM wiki_clicks 
+        ) derivedtable
+        WHERE derivedtable.NAME IS NOT NULL
+    """)
+    
+    return distinct_links
+
+def createRelationship(sql_context, sc, filename):
+    timestamp = filename[-11:-4] + '-01'
+    relationships = sql_context.sql("""
+        SELECT *, '"""+timestamp+"""' AS TIME
+        FROM wiki_clicks
+        """)
+    
+    return relationships
+    
 if __name__ == "__main__":
     start_time = time.time()
     FOLDER_PATH = sys.argv[1]

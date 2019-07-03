@@ -12,7 +12,7 @@ I learned about "Six Degrees of Wikipedia" and it has always fascinated me. "Six
 Since people read a lot of Wikipedia posts and there are millions of related articles, my main goal for the Insight Data Engineering Project is to build a tool that can help users to decide other interesting topics that they can read. 
 
 ## Demo
-{ ADD LINK FOR DEMO }
+https://youtu.be/_HAo6FFI2vw
 
 ## What does my project do?
 ### Supported Queries
@@ -22,7 +22,7 @@ A user can specify the title of a Wikipedia article.
 ~30 GB Wikipedia monthly aggregated clickstream data with over 3 millions recorded articles, and 400 millions clickstream.
 
 ## Pipeline
-{ ADD IMAGE OF PIPELINE }
+![Pipeline for Wiki Trends](link-to-image)
 
 ## Database Design
 ### Why Neo4j?
