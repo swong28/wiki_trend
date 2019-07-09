@@ -12,6 +12,7 @@ I learned about "Six Degrees of Wikipedia" and it has always fascinated me. "Six
 Since people read a lot of Wikipedia posts and there are millions of related articles, my main goal for the Insight Data Engineering Project is to build a tool that can help users to decide other interesting topics that they can read. 
 
 ## Demo
+I created a tool so that people could learn more about related Wikipedia articles based on the current article they are reading. Here is a video recording of the website I built using Flask:
 https://youtu.be/_HAo6FFI2vw
 
 ## What does my project do?
@@ -28,4 +29,3 @@ A user can specify the title of a Wikipedia article.
 ### Why Neo4j?
 Neo4j is a NoSQL 
 
-## Results
