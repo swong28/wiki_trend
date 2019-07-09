@@ -27,5 +27,7 @@ A user can specify the title of a Wikipedia article.
 
 ## Database Design
 ### Why Neo4j?
-Neo4j is a NoSQL 
+Neo4j is a graph-based NoSQL which delivers the lightning-fast read and write performance for graph database. For clickstream data, it can be easily expressed in a graph. Neo4j can also greatly reduce analysis time with its built-in graph-based algorithm, such as pageRank and betweenness centrality algorithms. 
+
+The problem I solved worked perfectly with Neo4j. I needed to use a database that could query the connected components based on user's input. In order to display the related Wikipedia articles quickly and reliably I needed a database that efficiently stored all of the graph data. 
 
