@@ -49,5 +49,5 @@ def writeToDB(filename):
 if __name__ == "__main__":
     start_time = time.time()
     path = "s3a://insight-wiki-clickstream/2016_04_en_clickstream.tsv"
-    processData(path)
+    storeNeo4jFromS3(path)
     print("--- %s seconds Used ---" %(time.time()-start_time))

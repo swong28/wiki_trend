@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Wiki Trend
 
 Insight Data Engineering</br>
@@ -13,24 +12,22 @@ I learned about "Six Degrees of Wikipedia" and it has always fascinated me. "Six
 Since people read a lot of Wikipedia posts and there are millions of related articles, my main goal for the Insight Data Engineering Project is to build a tool that can help users to decide other interesting topics that they can read. 
 
 ## Demo
-{ ADD LINK FOR DEMO }
+I created a tool so that people could learn more about related Wikipedia articles based on the current article they are reading. Here is a video recording of the website I built using Flask:
+https://youtu.be/_HAo6FFI2vw
 
 ## What does my project do?
 ### Supported Queries
 A user can specify the title of a Wikipedia article.
 
 ### Data Source
->30 GB Wikipedia monthly aggregated clickstream data with over 3 millions recorded articles, and 400 millions clickstream.
+~30 GB Wikipedia monthly aggregated clickstream data with over 3 millions recorded articles, and 400 millions clickstream.
 
 ## Pipeline
-{ ADD IMAGE OF PIPELINE }
+![Pipeline for Wiki Trends](https://github.com/swong28/wiki_trend/blob/develop/pipeline/pipeline.png)
 
 ## Database Design
 ### Why Neo4j?
+Neo4j is a graph-based NoSQL which delivers the lightning-fast read and write performance for graph database. For clickstream data, it can be easily expressed in a graph. Neo4j can also greatly reduce analysis time with its built-in graph-based algorithm, such as pageRank and betweenness centrality algorithms. 
 
+The problem I solved worked perfectly with Neo4j. I needed to use a database that could query the connected components based on user's input. In order to display the related Wikipedia articles quickly and reliably I needed a database that efficiently stored all of the graph data. 
 
-## Results
-
-=======
-# wiki_trend
->>>>>>> master
