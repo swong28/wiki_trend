@@ -2,9 +2,9 @@ var viz;
 function draw(wikipedia_page) {
     var config = {
         container_id: "viz",
-        server_url: "bolt://3.220.71.43:7687",
-        server_user: "neo4j",
-        server_password: "wong1234",
+        server_url: "",
+        server_user: "",
+        server_password: "",
         labels: {
             "Link": {
                 "caption": "name",
