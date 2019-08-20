@@ -1,0 +1,26 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - aws --version
+      - $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email)
+      - IMAGE_TAG=build-$(echo $CODEBUILD_BUILD_ID | awk -F":" '{print $2}')
+  build:
+    commands:
+      - echo Build started on `date`
+      - echo Building the Docker image...
+      - cd flask-frontend/
+      - docker build -t $REPO_URI:latest .
+      - docker tag $REPO_URI:latest $REPO_URI:$IMAGE_TAG
+      
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - echo Pushing the Docker images...
+      - docker push $REPO_URI:latest
+      - docker push $REPO_URI:$IMAGE_TAG
+artifacts:
+  files:
+    - imageDetail.json
