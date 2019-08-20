@@ -105,8 +105,8 @@ class WikiTrendCdkStack(core.Stack):
             },
             domain_name=domain_name,
             domain_zone=hosted_zone,
-            image=ecs.ContainerImage.from_registry("amazon/amazon-ecs-sample"),
-            # image=ecs.ContainerImage.from_ecr_repository(ecr_repo.flask),
+            # image=ecs.ContainerImage.from_registry("amazon/amazon-ecs-sample"),
+            image=ecs.ContainerImage.from_ecr_repository(ecr_repo.flask),
             public_load_balancer=True,
         )
 
