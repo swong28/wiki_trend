@@ -73,7 +73,7 @@ class WikiTrendCdkStack(core.Stack):
         for i in range(3):
             cluster.add_capacity(
                 "DefaultAutoScalingGroup-"+str(i)+'-'+branch,
-                instance_type=ec2.InstanceType("t2.small"),
+                instance_type=ec2.InstanceType("t2.medium"),
                 allow_all_outbound=True,
                 key_name=os.environ['KEYNAME'],
                 # vpc_subnets=vpc.public_subnets
@@ -105,8 +105,8 @@ class WikiTrendCdkStack(core.Stack):
             },
             domain_name=domain_name,
             domain_zone=hosted_zone,
-            # image=ecs.ContainerImage.from_registry("amazon/amazon-ecs-sample"),
-            image=ecs.ContainerImage.from_ecr_repository(ecr_repo.flask),
+            image=ecs.ContainerImage.from_registry("amazon/amazon-ecs-sample"),
+            # image=ecs.ContainerImage.from_ecr_repository(ecr_repo.flask),
             public_load_balancer=True,
         )
 
