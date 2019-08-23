@@ -79,6 +79,7 @@ class WikiTrendCdkStack(core.Stack):
                 # vpc_subnets=vpc.public_subnets
             )
         
+        # route53 for master branch
         if branch == 'master':
             # Add HostedZone
             hosted_zone = route53.HostedZone(
