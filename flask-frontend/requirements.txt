@@ -3,7 +3,7 @@ astroid==2.2.5
 attrs==19.1.0
 aws-cdk.cdk==0.36.1
 backcall==0.1.0
-bleach==3.1.0
+bleach==3.1.1
 boto3==1.9.164
 botocore==1.12.164
 cattrs==0.9.0
